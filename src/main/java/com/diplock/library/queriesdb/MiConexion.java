@@ -5,12 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MiConexion {
-
-	private static final String host = "monorail.proxy.rlwy.net";
-    private static final String databaseName = "railway";
-    private static final String user = "root";
-    private static final String password = "bB-a55H1-g4H434E614AC2AhA33FDeGD";
-    private static final int port = 11372;
+        private static final String host = "monorail.proxy.rlwy.net";
+        private static final String databaseName = "railway";
+        private static final String user = "root";
+        private static final String password = "bB-a55H1-g4H434E614AC2AhA33FDeGD";
+        private static final int port = 11372;
 
     private Connection connection; 
 

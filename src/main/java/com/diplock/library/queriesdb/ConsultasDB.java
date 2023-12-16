@@ -162,12 +162,32 @@ public class ConsultasDB {
   	  }
   	}
   
-	public static void main(String[] args) throws SQLException{
-		
-		MiConexion con = new MiConexion();
-		Connection conn = con.getConnection();
-
-		ConsultasDB.mostrarTablas(conn);
-	}
+//	public static void main(String[] args) throws SQLException{
+//
+//		MiConexion con = new MiConexion();
+//		Connection conn = con.getConnection();
+//
+//		String book = "cbook bigint(6) NOT NULL AUTO_INCREMENT,\n" +
+//				" title varchar(50) UNIQUE NOT NULL,\n" +
+//				" isbn varchar(17) UNIQUE NOT NULL,\n" +
+//				" authors varchar(80) NOT NULL,\n" +
+//				" dedition varchar(10) NOT NULL,\n" +
+//				" cgender bigint(4) NOT NULL,\n" +
+//				" summary varchar(255) DEFAULT NULL,\n" +
+//				" frontpage varchar(60) DEFAULT NULL,\n" +
+//				" pathbook varchar(200) DEFAULT NULL,\n" +
+//				" availability varchar(1) DEFAULT 'D',\n" +
+//				" PRIMARY KEY(cbook),\n" +
+//				" CONSTRAINT FK_IssuesBooks FOREIGN KEY(cgender) REFERENCES issues(cgender)";
+//
+//		String gender = "cgender bigint(4) NOT NULL AUTO_INCREMENT,\n" +
+//				" name varchar(20) NOT NULL,\n" +
+//				" subtopic varchar(20) DEFAULT NULL,\n" +
+//				"PRIMARY KEY(cgender)";
+//
+//
+//
+//		ConsultasDB.crearTabla(conn, "Libro", sql);
+//	}
 	
 }
