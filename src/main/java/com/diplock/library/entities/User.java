@@ -26,7 +26,6 @@ public class User {
   @Column(name = "id_user")
   private Long id_user;
 
-  // esto es un comentario
   @Column(name = "id_role", nullable = false)
   private Long id_role;
 
