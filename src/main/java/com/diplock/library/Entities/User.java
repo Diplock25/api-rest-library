@@ -1,4 +1,4 @@
-package com.diplock.library.entities;
+package com.diplock.library.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

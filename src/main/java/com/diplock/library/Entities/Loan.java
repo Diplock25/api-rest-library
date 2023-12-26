@@ -1,9 +1,7 @@
-package com.diplock.library.entities;
+package com.diplock.library.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Setter
