@@ -1,10 +1,10 @@
-package com.diplock.library.Daos;
+package com.diplock.library.services;
 
-import com.diplock.library.Entities.Category;
+import com.diplock.library.entities.Category;
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryDao {
+public interface CategoryService {
 
   List<Category> findAll();
   Optional<Category> findById(Long categoryid);

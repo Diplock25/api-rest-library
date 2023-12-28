@@ -1,6 +1,9 @@
-package com.diplock.library.Entities;
+package com.diplock.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 @Setter
 @Getter
@@ -21,5 +24,10 @@ public class Category {
 
     @Column(name = "subtopic", length = 30)
     private String subtopic;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+    @JsonIgnore
+    private List<Book> bookList = new ArrayList<>();
+
 
 }

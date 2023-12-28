@@ -1,8 +1,8 @@
-package com.diplock.library.Services.Impl;
+package com.diplock.library.services.Impl;
 
-import com.diplock.library.Daos.LoanDao;
-import com.diplock.library.Entities.Loan;
-import com.diplock.library.Services.LoanService;
+import com.diplock.library.entities.Loan;
+import com.diplock.library.repositories.LoanRepository;
+import com.diplock.library.services.LoanService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +12,35 @@ import org.springframework.stereotype.Service;
 public class LoanServiceImpl implements LoanService {
 
   @Autowired
-  private LoanDao loanDao;
+  private LoanRepository loanRepository;
 
   @Override
   public List<Loan> findAll() {
-    return loanDao.findAll();
+
+    return (List<Loan>) loanRepository.findAll();
   }
 
   @Override
   public Optional<Loan> findById(Long loanid) {
-    return loanDao.findById(loanid);
+
+    return loanRepository.findById(loanid);
   }
 
   @Override
   public Loan save(Loan loan) {
-    return loanDao.save(loan);
+
+    return loanRepository.save(loan);
   }
 
   @Override
-  public Loan update(Loan loan) {
-    return loanDao.update(loan);
+  public void update(Loan loan) {
+
+    loanRepository.save(loan);
   }
 
   @Override
   public void delete(Long loanid) {
-    loanDao.delete(loanid);
+
+    loanRepository.deleteById(loanid);
   }
 }

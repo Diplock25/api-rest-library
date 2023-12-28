@@ -1,8 +1,8 @@
-package com.diplock.library.Controllers;
+package com.diplock.library.controllers;
 
-import com.diplock.library.Controllers.Dto.CategoryDTO;
-import com.diplock.library.Entities.Category;
-import com.diplock.library.Services.CategoryService;
+import com.diplock.library.dtos.CategoryDTO;
+import com.diplock.library.entities.Category;
+import com.diplock.library.services.CategoryService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +37,7 @@ public class CategoryController {
             .categoryid(category.getCategoryid())
             .name(category.getName())
             .subtopic(category.getSubtopic())
+            .bookList(category.getBookList())
             .build();
 
         return ResponseEntity.ok(categoryDTO);
@@ -46,7 +46,7 @@ public class CategoryController {
       return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/findAll")
+    @GetMapping("/find/All")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findAll() {
       List<CategoryDTO> categoryList = categoryService.findAll()
@@ -55,12 +55,14 @@ public class CategoryController {
               .categoryid(category.getCategoryid())
               .name(category.getName())
               .subtopic(category.getSubtopic())
+              .bookList(category.getBookList())
               .build())
           .toList();
       return ResponseEntity.ok(categoryList);
     }
 
     @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> save(@RequestBody CategoryDTO categoryDTO) {
 
       if (categoryDTO.getName().isBlank()) {
@@ -82,6 +84,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{categoryid}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> update(@PathVariable Long categoryid, @RequestBody CategoryDTO categoryDTO) {
       Optional<Category> categoryOptional = categoryService.findById(categoryid);
 
@@ -97,6 +100,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{categoryid}")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> deleteById(@PathVariable Long categoryid) {
       if (categoryid != null) {
         Optional<Category> categoryOptional = categoryService.findById(categoryid);
@@ -109,4 +113,5 @@ public class CategoryController {
 
       return ResponseEntity.badRequest().build();
     }
+
 }

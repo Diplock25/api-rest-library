@@ -1,6 +1,6 @@
-package com.diplock.library.Repositories;
+package com.diplock.library.repositories;
 
-import com.diplock.library.Entities.Category;
+import com.diplock.library.entities.Category;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
