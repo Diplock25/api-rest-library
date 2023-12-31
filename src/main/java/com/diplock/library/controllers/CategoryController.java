@@ -2,9 +2,12 @@ package com.diplock.library.controllers;
 
 import com.diplock.library.dtos.CategoryDTO;
 import com.diplock.library.entities.Category;
+import com.diplock.library.mapper.CategoryMapper;
+
 import com.diplock.library.services.CategoryService;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,10 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private CategoryMapper categoryMapper;
+
+
     @GetMapping("/find/{categoryid}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findById(@PathVariable Long categoryid) {
@@ -33,13 +40,7 @@ public class CategoryController {
       if (categoryOptional.isPresent()) {
         Category category = categoryOptional.get();
 
-        CategoryDTO categoryDTO = CategoryDTO.builder()
-            .categoryid(category.getCategoryid())
-            .name(category.getName())
-            .subtopic(category.getSubtopic())
-            .bookList(category.getBookList())
-            .build();
-
+        CategoryDTO categoryDTO = categoryMapper.toDTO(category);
         return ResponseEntity.ok(categoryDTO);
       }
 
@@ -49,15 +50,8 @@ public class CategoryController {
     @GetMapping("/find/All")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> findAll() {
-      List<CategoryDTO> categoryList = categoryService.findAll()
-          .stream()
-          .map(category -> CategoryDTO.builder()
-              .categoryid(category.getCategoryid())
-              .name(category.getName())
-              .subtopic(category.getSubtopic())
-              .bookList(category.getBookList())
-              .build())
-          .toList();
+      List<CategoryDTO> categoryList = categoryMapper.toDTOList(categoryService.findAll());
+
       return ResponseEntity.ok(categoryList);
     }
 
@@ -69,17 +63,8 @@ public class CategoryController {
           return ResponseEntity.badRequest().build();
       }
 
-      Category category = categoryService.save(Category.builder()
-              .name(categoryDTO.getName())
-              .subtopic(categoryDTO.getSubtopic())
-              .build());
-
-      CategoryDTO categoryReturnDTO = CategoryDTO.builder()
-          .categoryid(category.getCategoryid())
-          .name(category.getName())
-          .subtopic(category.getSubtopic())
-          .build();
-
+      Category category = categoryMapper.toEntity(categoryDTO);
+      CategoryDTO categoryReturnDTO = categoryMapper.toDTO(categoryService.save(category));
       return ResponseEntity.ok(categoryReturnDTO);
     }
 

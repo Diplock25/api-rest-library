@@ -2,6 +2,7 @@ package com.diplock.library.controllers;
 
 import com.diplock.library.dtos.LoanDTO;
 import com.diplock.library.entities.Loan;
+import com.diplock.library.mapper.LoanMapper;
 import com.diplock.library.services.LoanService;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,9 @@ public class LoanController {
   @Autowired
   private LoanService loanService;
 
+  @Autowired
+  private LoanMapper loanMapper;
+
   @GetMapping("/find/{loanid}")
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<?> findById(@PathVariable Long loanid) {
@@ -33,14 +37,7 @@ public class LoanController {
     if (loanOptional.isPresent()) {
       Loan loan = loanOptional.get();
 
-      LoanDTO loanDTO = LoanDTO.builder()
-          .loanid(loan.getLoanid())
-          .loandate(loan.getLoandate())
-          .returndate(loan.getReturndate())
-          .user(loan.getUser())
-          .book(loan.getBook())
-          .build();
-
+      LoanDTO loanDTO = loanMapper.toDTO(loan);
       return ResponseEntity.ok(loanDTO);
     }
 
@@ -50,16 +47,8 @@ public class LoanController {
   @GetMapping("/find/All")
   @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<?> findAll() {
-    List<LoanDTO> loanList = loanService.findAll()
-        .stream()
-        .map(loan -> LoanDTO.builder()
-            .loanid(loan.getLoanid())
-            .loandate(loan.getLoandate())
-            .returndate(loan.getReturndate())
-            .user(loan.getUser())
-            .book(loan.getBook())
-            .build())
-        .toList();
+    List<LoanDTO> loanList = loanMapper.toDTOList(loanService.findAll());
+
     return ResponseEntity.ok(loanList);
   }
 
