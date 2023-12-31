@@ -1,4 +1,4 @@
-package com.diplock.library.Entities;
+package com.diplock.library.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,8 +18,8 @@ public class Publisher {
     @Column(name = "publisherid")
     private Long publisherid;
 
-    @Column(name = "publisher", length = 50)
-    private String publisher;
+    @Column(name = "name", length = 50)
+    private String name;
 
     @Column(name = "location", length =  100)
     private String location;

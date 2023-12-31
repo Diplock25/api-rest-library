@@ -1,0 +1,30 @@
+package com.diplock.library.services.publisher;
+
+import com.diplock.library.dataholders.PublisherDh;
+import com.diplock.library.dtos.PublisherDto;
+import com.diplock.library.entities.Publisher;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface PublisherService {
+    PublisherDto save(PublisherDh authorDh);
+
+    List<PublisherDto> saveAll(List<PublisherDh> authorDhList);
+
+    PublisherDto findById(Long id);
+
+    List<PublisherDto> findByIds(List<Long> ids);
+
+    List<PublisherDto> findAll();
+
+    PublisherDto update(PublisherDh authorDh);
+
+    List<PublisherDto> updateAll(List<PublisherDh> authorDhList);
+
+    Boolean deleteById(Long id);
+
+    void deleteByIds(List<Long> ids);
+
+    void deleteAll();
+}
