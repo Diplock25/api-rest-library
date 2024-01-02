@@ -2,10 +2,8 @@ package com.diplock.library.services.publisher;
 
 import com.diplock.library.dataholders.PublisherDh;
 import com.diplock.library.dtos.PublisherDto;
-import com.diplock.library.entities.Publisher;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PublisherService {
     PublisherDto save(PublisherDh authorDh);

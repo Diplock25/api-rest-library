@@ -79,11 +79,11 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public PublisherDto update(final PublisherDh publisherDh) {
         final Publisher publisher = this.publisherMapper.asEntity(publisherDh);
-        if (this.publisherRepository.existsById(publisherDh.getPublisherid())) {
+        if (this.publisherRepository.existsById(publisherDh.getPublisherId())) {
             return this.publisherMapper.asDto(this.publisherRepository.save(publisher));
         }
         log.warn("Update failed. There is no publisher in the database with the id: {}",
-                publisherDh.getPublisherid());
+                publisherDh.getPublisherId());
         return null;
     }
 
@@ -92,11 +92,11 @@ public class PublisherServiceImpl implements PublisherService {
         final List<Publisher> publishers = this.publisherMapper.asEntityList(publisherDhList);
         final List<PublisherDto> publisherDtoList = new ArrayList<>(publishers.size());
         publishers.forEach(publisher -> {
-            if (this.publisherRepository.existsById(publisher.getPublisherid())) {
+            if (this.publisherRepository.existsById(publisher.getPublisherId())) {
                 publisherDtoList.add(this.publisherMapper.asDto(this.publisherRepository.save(publisher)));
             }
             log.warn("Update failed. There is no publisher in the database with the id: {}",
-                    publisher.getPublisherid());
+                    publisher.getPublisherId());
         });
         return publisherDtoList;
     }
