@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PublisherDto {
-    private Long publisherid;
+    private Long publisherId;
     private String name;
     private String location;
     private String country;

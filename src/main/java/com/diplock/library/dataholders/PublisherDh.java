@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PublisherDh {
-    private Long publisherid;
+    private Long publisherId;
     private String name;
     private String location;
     private String country;
