@@ -3,13 +3,9 @@ package com.diplock.library.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "publishers")
 public class Publisher {
 
