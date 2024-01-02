@@ -8,21 +8,11 @@ public interface BookService {
 
   BookDto save(BookDh bookDh);
 
-  List<BookDto> saveAll(List<BookDh> bookDhList);
-
   BookDto findById(String id);
-
-  List<BookDto> findByIds(List<String> ids);
 
   List<BookDto> findAll();
 
-  BookDto update(BookDh bookDh);
-
-  List<BookDto> updateAll(List<BookDh> bookDhList);
+  BookDto updateById(String id, BookDh bookDh);
 
   Boolean deleteById(String id);
-
-  void deleteByIds(List<String> ids);
-
-  void deleteAll();
 }

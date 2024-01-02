@@ -7,7 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -48,10 +48,10 @@ public class Book {
   @ManyToMany
   @JoinTable(name = "books_authors", joinColumns = {@JoinColumn(name = "isbn")},
       inverseJoinColumns = {@JoinColumn(name = "author_id")})
-  private Set<Author> authors;
+  private List<Author> authors;
 
   @ManyToMany
   @JoinTable(name = "books_categories", joinColumns = {@JoinColumn(name = "isbn")},
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
-  private Set<Category> categories;
+  private List<Category> categories;
 }

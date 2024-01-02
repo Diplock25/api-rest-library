@@ -1,7 +1,5 @@
 package com.diplock.library.dataholders;
 
-import com.diplock.library.entities.Author;
-import com.diplock.library.entities.Category;
 import java.util.List;
 import lombok.Data;
 
@@ -26,8 +24,8 @@ public class BookDh {
 
   private String language;
 
-  private List<Author> authors;
+  private List<AuthorDh> authors;
 
-  private List<Category> categories;
+  private List<CategoryDh> categories;
 
 }

@@ -7,7 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,5 +26,5 @@ public class Category {
   private String name;
 
   @ManyToMany(mappedBy = "categories")
-  private Set<Book> books;
+  private List<Book> books;
 }

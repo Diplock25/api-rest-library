@@ -5,7 +5,6 @@ import com.diplock.library.dtos.AuthorDto;
 import com.diplock.library.entities.Author;
 import com.diplock.library.mapper.AuthorMapper;
 import com.diplock.library.repositories.AuthorRepository;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,13 +33,6 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  public List<AuthorDto> saveAll(final List<AuthorDh> authorDhList) {
-    final List<Author> authors = this.authorMapper.asEntityList(authorDhList);
-    final List<Author> authorsSaved = (List<Author>) this.authorRepository.saveAll(authors);
-    return this.authorMapper.asDtoList(authorsSaved);
-  }
-
-  @Override
   public AuthorDto findById(final Long id) {
     final Optional<Author> author = this.authorRepository.findById(id);
     if (author.isPresent()) {
@@ -50,18 +42,6 @@ public class AuthorServiceImpl implements AuthorService {
       return null;
     }
   }
-
-  @Override
-  public List<AuthorDto> findByIds(final List<Long> ids) {
-    final List<Author> authors = (List<Author>) this.authorRepository.findAllById(ids);
-    if (CollectionUtils.isEmpty(authors)) {
-      log.warn("There are no authors in the database with the ids: {}", ids);
-      return Collections.emptyList();
-    } else {
-      return this.authorMapper.asDtoList(authors);
-    }
-  }
-
 
   @Override
   public List<AuthorDto> findAll() {
@@ -75,28 +55,13 @@ public class AuthorServiceImpl implements AuthorService {
   }
 
   @Override
-  public AuthorDto update(final AuthorDh authorDh) {
+  public AuthorDto updateById(final Long id, final AuthorDh authorDh) {
     final Author author = this.authorMapper.asEntity(authorDh);
-    if (this.authorRepository.existsById(authorDh.getAuthorId())) {
+    if (this.authorRepository.existsById(id)) {
       return this.authorMapper.asDto(this.authorRepository.save(author));
     }
-    log.warn("Update failed. There is no author in the database with the id: {}",
-        authorDh.getAuthorId());
+    log.warn("Update failed. There is no author in the database with the id: {}", id);
     return null;
-  }
-
-  @Override
-  public List<AuthorDto> updateAll(final List<AuthorDh> authorDhList) {
-    final List<Author> authors = this.authorMapper.asEntityList(authorDhList);
-    final List<AuthorDto> authorDtoList = new ArrayList<>(authors.size());
-    authors.forEach(author -> {
-      if (this.authorRepository.existsById(author.getAuthorId())) {
-        authorDtoList.add(this.authorMapper.asDto(this.authorRepository.save(author)));
-      }
-      log.warn("Update failed. There is no author in the database with the id: {}",
-          author.getAuthorId());
-    });
-    return authorDtoList;
   }
 
   @Override
@@ -107,21 +72,5 @@ public class AuthorServiceImpl implements AuthorService {
     }
     log.warn("Delete failed. There is no author in the database with the id: {}", id);
     return false;
-  }
-
-  @Override
-  public void deleteByIds(final List<Long> ids) {
-    ids.forEach(id -> {
-      if (this.authorRepository.existsById(id)) {
-        this.authorRepository.deleteById(id);
-
-      }
-      log.warn("Delete failed. There is no author in the database with the id: {}", id);
-    });
-  }
-
-  @Override
-  public void deleteAll() {
-    this.authorRepository.deleteAll();
   }
 }

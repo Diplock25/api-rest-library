@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,65 +21,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("author")
+@RequestMapping("authors")
 @RequiredArgsConstructor
 public class AuthorController {
 
   @NonNull
   private AuthorService authorService;
 
-  @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<AuthorDto> createAuthor(@Valid @RequestBody final AuthorDh authorDh) {
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<AuthorDto> create(@Valid @RequestBody final AuthorDh authorDh) {
     return ResponseEntity.ok(this.authorService.save(authorDh));
   }
 
-  @PostMapping(value = "/create/all", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<List<AuthorDto>> createAuthors(
-      @Valid @RequestBody final List<AuthorDh> authorDhList) {
-    return ResponseEntity.ok(this.authorService.saveAll(authorDhList));
-  }
-
-  @GetMapping(value = "/find/{id}", produces = "application/json")
-  public ResponseEntity<AuthorDto> findAuthor(@Valid @PathVariable final Long id) {
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<AuthorDto> findById(@Valid @PathVariable final Long id) {
     return ResponseEntity.ok(this.authorService.findById(id));
   }
 
-  @PostMapping(value = "/find", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<List<AuthorDto>> findAuthors(@Valid @RequestBody final List<Long> ids) {
-    return ResponseEntity.ok(this.authorService.findByIds(ids));
-  }
-
-  @GetMapping(value = "/find/all", produces = "application/json")
-  public ResponseEntity<List<AuthorDto>> findAllAuthors() {
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<AuthorDto>> findAll() {
     return ResponseEntity.ok(this.authorService.findAll());
   }
 
-
-  @PutMapping(value = "/update", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<AuthorDto> updateAuthor(@Valid @RequestBody final AuthorDh authorDh) {
-    return ResponseEntity.ok(this.authorService.update(authorDh));
+  @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<AuthorDto> updateById(@Valid @PathVariable final Long id,
+      @Valid @RequestBody final AuthorDh authorDh) {
+    return ResponseEntity.ok(this.authorService.updateById(id, authorDh));
   }
 
-  @PutMapping(value = "/update/all", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<List<AuthorDto>> updateAuthors(
-      @Valid @RequestBody final List<AuthorDh> authorDhList) {
-    return ResponseEntity.ok(this.authorService.updateAll(authorDhList));
-  }
-
-  @DeleteMapping(value = "/delete/{id}", produces = "application/json")
-  public ResponseEntity<Boolean> deleteAuthor(@Valid @PathVariable final Long id) {
+  @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Boolean> deleteById(@Valid @PathVariable final Long id) {
     return ResponseEntity.ok(this.authorService.deleteById(id));
-  }
-
-  @DeleteMapping(value = "/delete", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<Boolean> deleteAuthors(@Valid @RequestBody final List<Long> ids) {
-    this.authorService.deleteByIds(ids);
-    return ResponseEntity.ok(true);
-  }
-
-  @DeleteMapping(value = "/delete/all", produces = "application/json")
-  public ResponseEntity<Boolean> deleteAllAuthors() {
-    this.authorService.deleteAll();
-    return ResponseEntity.ok(true);
   }
 }
