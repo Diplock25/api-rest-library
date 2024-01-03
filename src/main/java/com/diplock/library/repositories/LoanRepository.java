@@ -1,6 +1,6 @@
 package com.diplock.library.repositories;
 
-import com.diplock.library.entities.Loan;
+import com.diplock.library.entities.loan.Loan;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

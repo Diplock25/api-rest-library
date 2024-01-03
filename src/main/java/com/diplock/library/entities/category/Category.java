@@ -1,6 +1,6 @@
-package com.diplock.library.entities;
+package com.diplock.library.entities.category;
 
-import com.diplock.library.entities.loan.Loan;
+import com.diplock.library.entities.Book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,20 +27,20 @@ import lombok.Setter;
 @Builder
 @Data
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "categories")
+public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "userid")
-  private Long userid;
+  @Column(name = "categoryid")
+  private Long categoryid;
 
-  @Column(name = "name", length = 25)
+  @Column(name = "name", length = 30)
   private String name;
 
-  @Column(name = "surname", length = 50)
-  private String surname;
+  @Column(name = "subtopic", length = 30)
+  private String subtopic;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
   @JsonIgnore
-  private List<Loan> loanList = new ArrayList<>();
+  private List<Book> bookList = new ArrayList<>();
 }

@@ -1,15 +1,19 @@
 package com.diplock.library.controllers;
 
+import com.diplock.library.dataholders.CategoryDh;
 import com.diplock.library.dtos.CategoryDTO;
-import com.diplock.library.entities.Category;
-import com.diplock.library.mapper.CategoryMapper;
 
 import com.diplock.library.services.CategoryService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,83 +24,59 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+@Slf4j
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("category")
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private CategoryMapper categoryMapper;
+    @NonNull
+    private final CategoryService categoryService;
 
 
-    @GetMapping("/find/{categoryid}")
+    // Se establece explícitamente, si la lógica del método se completa correctamente,
+    // enviando una respuesta con un código de estado HTTP 200
+    @GetMapping(value = "/{categoryid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> findById(@PathVariable Long categoryid) {
-      Optional<Category> categoryOptional = categoryService.findById(categoryid);
-
-      if (categoryOptional.isPresent()) {
-        Category category = categoryOptional.get();
-
-        CategoryDTO categoryDTO = categoryMapper.toDTO(category);
-        return ResponseEntity.ok(categoryDTO);
-      }
-
-      return ResponseEntity.notFound().build();
+    public ResponseEntity<CategoryDTO> findById(@PathVariable("categoryid") final Long categoryid) {
+        return ResponseEntity.ok(categoryService.findById(categoryid));
     }
 
-    @GetMapping("/find/All")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> findAll() {
-      List<CategoryDTO> categoryList = categoryMapper.toDTOList(categoryService.findAll());
 
-      return ResponseEntity.ok(categoryList);
+    // Se establece explícitamente, si la lógica del método se completa correctamente,
+    // enviando una respuesta con un código de estado HTTP 200
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+          return ResponseEntity.ok(categoryService.findAll());
     }
 
-    @PostMapping("/save")
+
+    // Se establece explícitamente que, si la lógica del método se completa correctamente
+    // y se crea un nuevo recurso, se enviará una respuesta con un código de estado
+    // HTTP 201 (CREATED)
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> save(@RequestBody CategoryDTO categoryDTO) {
-
-      if (categoryDTO.getName().isBlank()) {
-          return ResponseEntity.badRequest().build();
-      }
-
-      Category category = categoryMapper.toEntity(categoryDTO);
-      CategoryDTO categoryReturnDTO = categoryMapper.toDTO(categoryService.save(category));
-      return ResponseEntity.ok(categoryReturnDTO);
+    public ResponseEntity<CategoryDTO> save(@Valid @RequestBody final CategoryDh categoryDh) {
+      return ResponseEntity.ok(categoryService.save(categoryDh));
     }
 
-    @PutMapping("/update/{categoryid}")
+
+    // Se establece explícitamente, si la lógica del método se completa correctamente,
+    // enviando una respuesta con un código de estado HTTP 200
+    @PutMapping(value = "/{categoryid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> update(@PathVariable Long categoryid, @RequestBody CategoryDTO categoryDTO) {
-      Optional<Category> categoryOptional = categoryService.findById(categoryid);
-
-      if (categoryOptional.isPresent()){
-          Category category = categoryOptional.get();
-          category.setName(categoryDTO.getName());
-          category.setSubtopic(categoryDTO.getSubtopic());
-          categoryService.update(category);
-          return ResponseEntity.ok("Update registre");
-      }
-
-      return ResponseEntity.notFound().build();
+    public ResponseEntity<CategoryDTO> update(@PathVariable("categoryid") final Long categoryid, @RequestBody final CategoryDh categoryDh) {
+          return ResponseEntity.ok(categoryService.update(categoryid, categoryDh));
     }
 
-    @DeleteMapping("/delete/{categoryid}")
+
+    // Si la lógica de búsqueda determina que el recurso no existe, se activará la excepción.
+    // La excepción se capturará y se enviará una respuesta con un código de estado HTTP 404.
+    @DeleteMapping(value = "/{categoryid}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<?> deleteById(@PathVariable Long categoryid) {
-      if (categoryid != null) {
-        Optional<Category> categoryOptional = categoryService.findById(categoryid);
-
-        if (categoryOptional.isPresent()){
-          categoryService.delete(categoryid);
-          return ResponseEntity.ok("Delete registre");
-        }
-      }
-
-      return ResponseEntity.badRequest().build();
+    public ResponseEntity<Boolean> deleteById(@PathVariable("categoryid") final Long categoryid) {
+          return ResponseEntity.ok(categoryService.delete(categoryid));
     }
 
 }

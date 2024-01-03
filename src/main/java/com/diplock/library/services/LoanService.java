@@ -1,13 +1,13 @@
 package com.diplock.library.services;
 
-import com.diplock.library.entities.Loan;
+import com.diplock.library.dataholders.LoanDh;
+import com.diplock.library.dtos.LoanDTO;
 import java.util.List;
-import java.util.Optional;
 
 public interface LoanService {
-  List<Loan> findAll();
-  Optional<Loan> findById(Long loanid);
-  Loan save(Loan loan);
-  void update(Loan loan);
-  void delete(Long loanid);
+  List<LoanDTO> findAll();
+  LoanDTO findById(Long loanid);
+  LoanDTO save(LoanDh loanDh);
+  LoanDTO update(Long loanid, LoanDh loanDh);
+  Boolean delete(Long loanid);
 }
