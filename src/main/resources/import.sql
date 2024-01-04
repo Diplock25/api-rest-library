@@ -6,6 +6,7 @@ INSERT INTO users(id_user, username, email, password) VALUES(3, 'Ruben', 'ruben@
 INSERT INTO roles(id_role, name) VALUE(1, "ADMIN")
 INSERT INTO roles(id_role, name) VALUE(2, "USER")
 INSERT INTO roles(id_role, name) VALUE(3, "INVITED")
+INSERT INTO roles(id_role, name) VALUE(4, "INTRUSO")
 
 INSERT INTO user_roles(role_id, user_id) VALUE(1, 1)
 INSERT INTO user_roles(role_id, user_id) VALUE(2, 1)

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Table(name = "users")
-public class UserEntity {
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ public class UserEntity {
   @Column(name = "password", nullable = false, length = 50)
   private String password;
 
-  @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity.class, cascade = CascadeType.PERSIST)
+  @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class, cascade = CascadeType.PERSIST)
   @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<RoleEntity> roles;
+  private Set<Role> roles;
 }

@@ -1,16 +1,14 @@
-package com.diplock.library.dtos;
+package com.diplock.library.dataholders;
 
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-public class UserDTO {
+public class UserDh {
   private Long idUser;
   private String username;
   private String email;
   private String password;
   private Set<String> roles;
 }
+

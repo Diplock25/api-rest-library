@@ -1,71 +1,48 @@
 package com.diplock.library.mapper;
 
+import com.diplock.library.dataholders.UserDh;
 import com.diplock.library.dtos.UserDTO;
-import com.diplock.library.entities.RoleEntity;
-import com.diplock.library.entities.UserEntity;
-import com.diplock.library.entities.enums.ERole;
-import com.diplock.library.repositories.RoleRepository;
+import com.diplock.library.entities.Role;
+import com.diplock.library.entities.User;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingConstants.ComponentModel;
-import org.mapstruct.Mappings;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+
+@Mapper(componentModel = ComponentModel.SPRING)
 public interface UserMapper {
 
   @Mapping(source = "roles", target = "roles", qualifiedByName="toStrings")
-  UserDTO userToDTO(UserEntity user);
+  @Mapping(target = "password", ignore = true)
+  UserDTO asDto(User user);
 
   @InheritInverseConfiguration
-  @Mapping(target = "roles", source = "roles", qualifiedByName="toEntities")
-  UserEntity userToEntity(UserDTO userDTO);
+  @Mapping(target = "roles", ignore = true)
+  User asEntity(UserDh userDh);
 
-  List<UserDTO> toDTOList (List<UserEntity> entityList);
+  List<UserDTO> asDtoList (List<User> users);
 
-  List<UserEntity> toEntityList (List<UserDTO> dtoList);
+  List<User> asEntityList (List<UserDh> userDhList);
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(target = "roles", ignore = true)
+  void update(UserDh userDh, @MappingTarget User user);
 
   @Named("toStrings")
-  static Set<String> mapToStrings(Set<RoleEntity> roles) {
+  static Set<String> mapToStrings(Set<Role> roles) {
     Set<String> roleNames = new HashSet<>();
     if (roles != null) {
-      for (RoleEntity role : roles) {
+      for (Role role : roles) {
         roleNames.add(role.getName().toString());
       }
     }
     return roleNames;
   }
-
-  @Named("toEntities")
-  static Set<RoleEntity> mapToEntities(Set<String> roleNames) {
-
-    Set<RoleEntity> roles = new HashSet<>();
-    if (roleNames != null) {
-      for (String name : roleNames) {
-        RoleEntity role = new RoleEntity();
-        role.setName(ERole.valueOf(name));
-        roles.add(role);
-      }
-    }
-/*
-    Set<RoleEntity> roles = roleNames.stream()
-      .map(name -> this.roleRepository.findByName(ERole.valueOf(name))
-        .orElseGet(() -> {
-          final RoleEntity newRole = new RoleEntity();
-          newRole.setName(ERole.valueOf(name));
-          return newRole;
-        }))
-      .collect(Collectors.toSet());
-*/
-    return roles;
-  }
-
-
 }

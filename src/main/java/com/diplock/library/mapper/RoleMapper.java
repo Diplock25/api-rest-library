@@ -1,8 +1,20 @@
 package com.diplock.library.mapper;
 
+import com.diplock.library.dtos.RoleDTO;
+import com.diplock.library.entities.Role;
+import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants.ComponentModel;
 
-@Mapper
+
+@Mapper(componentModel = ComponentModel.SPRING)
 public interface RoleMapper {
+  RoleDTO asDto(Role role);
+
+  Role asEntity(RoleDTO roleDTO);
+
+  List<RoleDTO> asDtoList (List<Role> roles);
+
+  List<Role> asEntityList (List<RoleDTO> rolesDto);
 
 }
