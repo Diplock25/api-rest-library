@@ -10,8 +10,6 @@ public interface UserService {
 
   UserDTO save(UserDh userDh);
 
-  //void saveAll(UserEntity user);
-
   UserDTO findById(Long id);
 
   List<UserDTO> findALl();

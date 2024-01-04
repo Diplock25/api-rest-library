@@ -8,8 +8,6 @@ import com.diplock.library.entities.enums.ERole;
 import com.diplock.library.mapper.UserMapper;
 import com.diplock.library.repositories.RoleRepository;
 import com.diplock.library.repositories.UserRepository;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
