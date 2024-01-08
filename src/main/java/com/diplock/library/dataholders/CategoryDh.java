@@ -1,6 +1,6 @@
 package com.diplock.library.dataholders;
 
-import com.diplock.library.entities.Book;
+import com.diplock.library.entities.book.Book;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;

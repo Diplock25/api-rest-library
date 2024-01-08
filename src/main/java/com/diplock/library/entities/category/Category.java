@@ -1,6 +1,6 @@
 package com.diplock.library.entities.category;
 
-import com.diplock.library.entities.Book;
+import com.diplock.library.entities.book.Book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
