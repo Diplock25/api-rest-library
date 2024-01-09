@@ -4,12 +4,11 @@ import com.diplock.library.dataholders.UserDh;
 import com.diplock.library.dtos.UserDTO;
 import com.diplock.library.services.user.UserService;
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Slf4j
 @RestController
@@ -32,65 +30,34 @@ public class UserController {
   private UserService userService;
 
 
-  @GetMapping("/")
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> findAll() {
     final List<UserDTO> userList = userService.findALl();
     return ResponseEntity.ok(userList);
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<?> findById(@PathVariable final Long id) {
-    UserDTO user = userService.findById(id);
-    if (user == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body("No user found with id: " + id);
-    }
-    return ResponseEntity.ok(user);
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<UserDTO> findById(@Valid @PathVariable final Long id) {
+    return ResponseEntity.ok(userService.findById(id));
   }
 
-  @PostMapping("/")
-  public ResponseEntity<?> createUser(@Valid @RequestBody final UserDh userDh){
-    final UserDTO user = userService.save(userDh);
-
-    URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-      .path("/{id}")
-      .buildAndExpand(user.getIdUser())
-      .toUri();
-
-    return ResponseEntity.created(location).body(user);
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<UserDTO> createUser(@Valid @RequestBody final UserDh userDh){
+    return ResponseEntity.ok(userService.save(userDh));
   }
 
-  @PatchMapping("/{id}")
-  public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserDh userDh) {
-    UserDTO updatedUser = userService.updateById(id, userDh);
-    if (updatedUser == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body("No user found with id: " + id);
-    }
-    return ResponseEntity.ok(updatedUser);
+  @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<UserDTO> updateUser(@Valid @PathVariable final Long id, @Valid @RequestBody final UserDh userDh) {
+    return ResponseEntity.ok(userService.update(id, userDh));
   }
 
-  @PutMapping("/")
-  public ResponseEntity<?> updateUser(@Valid @RequestBody UserDh userDh) {
-    UserDTO user = userService.update(userDh);
-
-    if (user == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body("No user found with id: " + userDh.getIdUser());
-    }
-
-    return ResponseEntity.ok(user);
+  @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<UserDTO> updateUserById(@Valid @PathVariable Long id, @Valid @RequestBody UserDh userDh) {
+    return ResponseEntity.ok(userService.updateById(id, userDh));
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteUser(@PathVariable final Long id) {
-    if (userService.deleteById(id)) {
-      return ResponseEntity.ok()
-        .body("User deleted successfully");
-    }
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-      .body("No user found with id: " + id);
-
+  @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Boolean> deleteUser(@Valid @PathVariable final Long id) {
+    return ResponseEntity.ok(userService.deleteById(id));
   }
 }

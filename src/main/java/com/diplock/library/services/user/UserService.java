@@ -14,10 +14,8 @@ public interface UserService {
 
   List<UserDTO> findALl();
 
-  UserDTO update(UserDh userDh);
+  UserDTO update(Long id, UserDh userDh);
   UserDTO updateById(Long id, UserDh userDh);
 
   Boolean deleteById(Long id);
-
-  Set<Role> getRolesFromNames(Set<String> roleNames);
 }

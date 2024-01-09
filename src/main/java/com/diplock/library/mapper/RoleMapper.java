@@ -1,5 +1,6 @@
 package com.diplock.library.mapper;
 
+import com.diplock.library.dataholders.RoleDh;
 import com.diplock.library.dtos.RoleDTO;
 import com.diplock.library.entities.Role;
 import java.util.List;
@@ -11,10 +12,10 @@ import org.mapstruct.MappingConstants.ComponentModel;
 public interface RoleMapper {
   RoleDTO asDto(Role role);
 
-  Role asEntity(RoleDTO roleDTO);
+  Role asEntity(RoleDh roleDh);
 
   List<RoleDTO> asDtoList (List<Role> roles);
 
-  List<Role> asEntityList (List<RoleDTO> rolesDto);
+  List<Role> asEntityList (List<RoleDh> roleDhs);
 
 }

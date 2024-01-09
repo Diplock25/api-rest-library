@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StopWatch;
 
 @Slf4j
 @Service
@@ -35,21 +36,23 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserDTO> findALl() {
+
     final List<User> users = (List<User>) this.userRepository.findAll();
+
     if (CollectionUtils.isEmpty(users)) {
       log.warn("There are no users in the database");
       return Collections.emptyList();
-    } else {
-      return this.userMapper.asDtoList(users);
     }
+
+    return this.userMapper.asDtoList(users);
   }
 
   @Override
   public UserDTO findById(final Long id) {
-    final Optional<User> userOptional = this.userRepository.findById(id);
+    final Optional<User> user = this.userRepository.findById(id);
 
-    if (userOptional.isPresent()) {
-      return userMapper.asDto(userOptional.get());
+    if (user.isPresent()) {
+      return this.userMapper.asDto(user.get());
     }
 
     log.warn("There is no user in the database with the id: {}", id);
@@ -60,21 +63,26 @@ public class UserServiceImpl implements UserService {
   public UserDTO save(final UserDh userDh) {
     final User user = this.userMapper.asEntity(userDh);
     user.setRoles(getRolesFromNames(userDh.getRoles()));
+
     final User userSaved = this.userRepository.save(user);
+
     return this.userMapper.asDto(userSaved);
   }
 
 
   @Override
-  public UserDTO update(UserDh userDh) {
-    User user = userMapper.asEntity(userDh); // Remember that it ignores mapping for "roles".
-    user.setRoles(getRolesFromNames(userDh.getRoles())); // Receive a Set<String>
+  public UserDTO update(Long id, UserDh userDh) {
 
-    if (userRepository.existsById(user.getIdUser())) {
-      return userMapper.asDto(userRepository.save(user));
+    final User user = this.userMapper.asEntity(userDh); // Remember that it ignores mapping for "roles"
+    final boolean existsUser = this.userRepository.existsById(id);
+
+    if (existsUser) {
+      user.setRoles(getRolesFromNames(userDh.getRoles())); // Receive a Set<String>
+      final User userSaved = this.userRepository.save(user);
+
+      return userMapper.asDto(user);
     }
 
-    log.warn("Update failed. There is no author in the database with the id: {}", userDh.getIdUser());
     return null;
   }
 
@@ -82,34 +90,39 @@ public class UserServiceImpl implements UserService {
   public UserDTO updateById(Long id, UserDh userDh) {
 
     Optional<User> optionalUser = userRepository.findById(id);
+    final boolean existsUser = optionalUser.isPresent();
 
-    if(optionalUser.isPresent()) {
+    if (existsUser) {
       User user = optionalUser.get();
 
+      userMapper.update(userDh, user);
       if(userDh.getRoles() != null) {
         user.setRoles(getRolesFromNames(userDh.getRoles()));
       }
 
-      userMapper.update(userDh, user);
       User updatedUser = userRepository.save(user);
-      return userMapper.asDto(updatedUser);
+
+      return this.userMapper.asDto(updatedUser);
     }
 
+    log.warn("Update failed. There is no user in the database with the id: {}", id);
     return null;
   }
 
   @Override
   public Boolean deleteById(final Long id) {
-    if (this.userRepository.existsById(id)) {
+
+    final boolean existsUser = this.userRepository.existsById(id);
+    if (existsUser) {
       this.userRepository.deleteById(id);
       return true;
     }
-    log.warn("Delete failed. There is no user in the database with the id: {}", id);
+
     return false;
   }
 
-  @Override
-  public Set<Role> getRolesFromNames(final Set<String> roleNames) {
+
+  private Set<Role> getRolesFromNames(final Set<String> roleNames) {
     return roleNames.stream()
       .map(name -> this.roleRepository.findByName(ERole.valueOf(name))
         .orElseGet(() -> {

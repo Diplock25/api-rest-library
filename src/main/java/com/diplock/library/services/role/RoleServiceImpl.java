@@ -1,6 +1,7 @@
 package com.diplock.library.services.role;
 
 import com.diplock.library.dtos.RoleDTO;
+import com.diplock.library.dtos.UserDTO;
 import com.diplock.library.entities.Role;
 import com.diplock.library.mapper.RoleMapper;
 import com.diplock.library.repositories.RoleRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StopWatch;
 
 @Slf4j
 @Service
@@ -31,20 +33,20 @@ public class RoleServiceImpl implements RoleService {
     if (CollectionUtils.isEmpty(roles)) {
       log.warn("There are no roles in the database");
       return Collections.emptyList();
-    } else {
-      return this.roleMapper.asDtoList(roles);
     }
+
+    return this.roleMapper.asDtoList(roles);
   }
 
   @Override
   public RoleDTO findById(final Long id) {
-    final Optional<Role> roleOptional = this.roleRepository.findById(id);
+    final Optional<Role> role = this.roleRepository.findById(id);
+    final boolean isPresent = role.isPresent();
 
-    if (roleOptional.isPresent()) {
-      return this.roleMapper.asDto(roleOptional.get());
+    if (isPresent) {
+      return this.roleMapper.asDto(role.get());
     }
 
-    log.warn("There is no user in the database with the id: {}", id);
     return null;
   }
 

@@ -2,6 +2,7 @@ package com.diplock.library.controllers;
 
 import com.diplock.library.dtos.RoleDTO;
 import com.diplock.library.services.role.RoleService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -22,22 +23,14 @@ public class RoleController {
   @NonNull
   private RoleService roleService;
 
-  @GetMapping("/")
-  public ResponseEntity<?> findAll() {
-    final List<RoleDTO> userList = roleService.findAll();
-    return ResponseEntity.ok(userList);
+  @GetMapping("")
+  public ResponseEntity<List<RoleDTO>> findAll() {
+    return ResponseEntity.ok(roleService.findAll());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> findbyId(@PathVariable Long id) {
-    RoleDTO role = roleService.findById(id);
-
-    if (role == null) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body("No user found with id: " + id);
-    }
-
-    return ResponseEntity.ok(role);
+  public ResponseEntity<?> findById(@Valid @PathVariable Long id) {
+    return ResponseEntity.ok(roleService.findById(id));
   }
 
 }
