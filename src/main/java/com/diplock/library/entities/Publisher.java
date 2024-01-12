@@ -23,6 +23,6 @@ public class Publisher {
     @Column(name = "country", length = 30)
     private String country;
 
-    @OneToMany (mappedBy = "publishers" )
-    private List<Book> books;
+    //@OneToMany (mappedBy = "publishers")
+    //private List<Book> books;
 }

@@ -35,8 +35,8 @@ public class PublisherController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PublisherDto> updatePublisher(@Valid @RequestBody final PublisherDh publisherDh) {
-        return ResponseEntity.ok(this.publisherService.update(publisherDh));
+    public ResponseEntity<PublisherDto> updatePublisher(@Valid @PathVariable final Long id, @Valid @RequestBody final PublisherDh publisherDh) {
+        return ResponseEntity.ok(this.publisherService.updateById(id , publisherDh));
     }
 
 
