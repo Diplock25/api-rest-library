@@ -1,46 +1,57 @@
 package com.diplock.library.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import java.util.List;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@Builder
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name =  "books")
+@Table(name = "books")
 public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_book")
-    private Long id_book;
 
-    @Column(name = "title", length = 100)
-    private String title;
+  @Id
+  @Column(name = "isbn", length = 13)
+  private String isbn;
 
-    @Column(name = "isbn", length = 30)
-    private String isbn;
+  @Column(name = "title", length = 50)
+  private String title;
 
-    @Column(name = "pages", length = 11)
-    private Integer pages;
+  @Column(name = "pages", length = 11)
+  private Integer pages;
 
-    @Column(name = "id_language", nullable = false)
-    private Long id_language;
+  @Column(name = "summary")
+  private String summary;
 
-    @Column(name = "Edition", length = 11)
-    private String Edition;
+  @Column(name = "edition_date", length = 11)
+  private String editionDate;
 
-    @Column(name = "id_author", nullable = false)
-    private Long id_author;
+  @Column(name = "cover_image", length = 55)
+  private String coverImage;
 
-    @Column(name = "id_publisher", nullable = false)
-    private Long id_publisher;
+  @Column(name = "book_file", length = 55)
+  private String bookFile;
 
-    @Column(name = "id_category", nullable = false)
-    private Long id_category;
+  @Column(name = "file_path", length = 100)
+  private String filePath;
 
-    @Column(name = "summary", length = 255)
-    private String summary;
+  @Column(name = "language", length = 20)
+  private String language;
 
+  @ManyToMany
+  @JoinTable(name = "books_authors", joinColumns = {@JoinColumn(name = "isbn")},
+      inverseJoinColumns = {@JoinColumn(name = "author_id")})
+  private List<Author> authors;
+
+  @ManyToMany
+  @JoinTable(name = "books_categories", joinColumns = {@JoinColumn(name = "isbn")},
+      inverseJoinColumns = {@JoinColumn(name = "category_id")})
+  private List<Category> categories;
 }
