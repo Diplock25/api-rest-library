@@ -6,9 +6,15 @@ import lombok.Data;
 
 @Data
 public class LoanDh {
-  private Long loanid;
-  private String loandate;
-  private String returndate;
+
+  private Long loanId;
+
+  private String loanDate;
+
+  private String returnDate;
+
   private User user;
+
   private Book book;
+
 }

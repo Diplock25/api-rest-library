@@ -1,6 +1,6 @@
-package com.diplock.library.entities.category;
+package com.diplock.library.entities;
 
-import com.diplock.library.entities.book.Book;
+import com.diplock.library.entities.Book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,28 +11,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "categories")
 public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "categoryid")
-  private Long categoryid;
+  @Column(name = "category_id")
+  private Long categoryId;
 
   @Column(name = "name", length = 30)
   private String name;
@@ -40,7 +31,8 @@ public class Category {
   @Column(name = "subtopic", length = 30)
   private String subtopic;
 
-  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
+  @OneToMany(mappedBy = "category", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
   @JsonIgnore
-  private List<Book> bookList = new ArrayList<>();
+  private List<Book> bookList;
+
 }

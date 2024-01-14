@@ -7,17 +7,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
 public class LoanDTO {
 
-  private Long loanid;
-  private String loandate;
-  private String returndate;
+  private Long loanId;
+
+  private String loanDate;
+
+  private String returnDate;
+
   private User user;
+
   private Book book;
 
 }

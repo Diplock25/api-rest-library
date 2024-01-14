@@ -1,18 +1,16 @@
-package com.diplock.library.services.Impl;
+package com.diplock.library.services.category;
 
 import com.diplock.library.dataholders.CategoryDh;
 import com.diplock.library.dtos.CategoryDTO;
-import com.diplock.library.entities.category.Category;
+import com.diplock.library.entities.Category;
 import com.diplock.library.mapper.CategoryMapper;
 import com.diplock.library.repositories.CategoryRepository;
-import com.diplock.library.services.CategoryService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -31,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
   public List<CategoryDTO> findAll() {
     final List<Category> categoryList = (List<Category>) categoryRepository.findAll();
     if (CollectionUtils.isEmpty(categoryList)) {
-      log.warn("There are not categories en the table categories");
+      log.warn("There are no category in the database");
       return Collections.emptyList();
     } else {
       return categoryMapper.asDtoList(categoryList);
@@ -39,12 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public CategoryDTO findById(final Long categoryid) {
-    final Optional<Category> category = categoryRepository.findById(categoryid);
+  public CategoryDTO findById(final Long id) {
+    final Optional<Category> category = categoryRepository.findById(id);
     if (category.isPresent()) {
       return categoryMapper.asDTO(category.get());
     } else {
-      log.warn("There is not category en the table categories with the id: {}", categoryid);
+      log.warn("There is no category in the database with the id: {}", id);
       return null;
     }
   }
@@ -57,22 +55,22 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public CategoryDTO update(final Long categoryid, final CategoryDh categoryDh) {
+  public CategoryDTO update(final Long id, final CategoryDh categoryDh) {
     final Category category = categoryMapper.asEntity(categoryDh);
-    if (categoryRepository.existsById(categoryid)) {
+    if (categoryRepository.existsById(id)) {
         return categoryMapper.asDTO(categoryRepository.save(category));
     }
-    log.warn("Update failed.  There is no category en the table categories with the id: {}", categoryid);
+    log.warn("Update failed.  There is no category in the database with the id: {}", id);
     return null;
   }
 
   @Override
-  public Boolean delete(Long categoryid) {
-    if (categoryRepository.existsById(categoryid)) {
-      categoryRepository.deleteById(categoryid);
+  public Boolean delete(Long id) {
+    if (categoryRepository.existsById(id)) {
+      categoryRepository.deleteById(id);
       return true;
     }
-    log.warn("Delete failed.  There is no category in the table categories with the id: {}", categoryid);
+    log.warn("Delete failed.  There is no category in the table categories with the id: {}", id);
     return false;
   }
 }
