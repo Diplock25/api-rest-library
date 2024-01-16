@@ -1,7 +1,7 @@
 package com.diplock.library.controllers;
 
 import com.diplock.library.dataholders.LoanDh;
-import com.diplock.library.dtos.LoanDTO;
+import com.diplock.library.dtos.LoanDto;
 
 import com.diplock.library.services.loan.LoanService;
 import jakarta.validation.Valid;
@@ -31,22 +31,22 @@ public class LoanController {
   private final LoanService loanService;
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<LoanDTO> findById(@Valid @PathVariable final Long id) {
+  public ResponseEntity<LoanDto> findById(@Valid @PathVariable final Long id) {
       return ResponseEntity.ok(loanService.findById(id));
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<List<LoanDTO>> findAll() {
+  public ResponseEntity<List<LoanDto>> findAll() {
     return ResponseEntity.ok(loanService.findAll());
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<LoanDTO> save(@Valid @RequestBody final LoanDh loanDh) {
+  public ResponseEntity<LoanDto> save(@Valid @RequestBody final LoanDh loanDh) {
     return ResponseEntity.ok(loanService.save(loanDh));
   }
 
   @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<LoanDTO> update(@Valid @PathVariable final Long id, @RequestBody final LoanDh loanDh) {
+  public ResponseEntity<LoanDto> update(@Valid @PathVariable final Long id, @RequestBody final LoanDh loanDh) {
       return ResponseEntity.ok(loanService.update(id, loanDh));
   }
 

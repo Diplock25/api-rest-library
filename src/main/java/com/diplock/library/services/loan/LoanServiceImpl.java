@@ -1,7 +1,7 @@
 package com.diplock.library.services.loan;
 
 import com.diplock.library.dataholders.LoanDh;
-import com.diplock.library.dtos.LoanDTO;
+import com.diplock.library.dtos.LoanDto;
 import com.diplock.library.entities.Loan;
 import com.diplock.library.mapper.LoanMapper;
 import com.diplock.library.repositories.LoanRepository;
@@ -26,7 +26,7 @@ public class LoanServiceImpl implements LoanService {
   private final LoanMapper loanMapper;
 
   @Override
-  public List<LoanDTO> findAll() {
+  public List<LoanDto> findAll() {
     final List<Loan> loanList = (List<Loan>) loanRepository.findAll();
     if (CollectionUtils.isEmpty(loanList)) {
       log.warn("There are no loan in the database");
@@ -37,7 +37,7 @@ public class LoanServiceImpl implements LoanService {
   }
 
   @Override
-  public LoanDTO findById(final Long id) {
+  public LoanDto findById(final Long id) {
     final Optional<Loan> loan = loanRepository.findById(id);
     if (loan.isPresent()) {
       return loanMapper.asDTO(loan.get());
@@ -48,14 +48,14 @@ public class LoanServiceImpl implements LoanService {
   }
 
   @Override
-  public LoanDTO save(final LoanDh loanDh) {
+  public LoanDto save(final LoanDh loanDh) {
     final Loan loan = loanMapper.asEntity(loanDh);
     final Loan loanSaved = loanRepository.save(loan);
     return loanMapper.asDTO(loanSaved);
   }
 
   @Override
-  public LoanDTO update(final Long id, final LoanDh loanDh) {
+  public LoanDto update(final Long id, final LoanDh loanDh) {
     final Loan loan = loanMapper.asEntity(loanDh);
     if (loanRepository.existsById(id)) {
       return loanMapper.asDTO(loanRepository.save(loan));

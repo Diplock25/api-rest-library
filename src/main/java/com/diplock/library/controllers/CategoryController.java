@@ -1,7 +1,7 @@
 package com.diplock.library.controllers;
 
 import com.diplock.library.dataholders.CategoryDh;
-import com.diplock.library.dtos.CategoryDTO;
+import com.diplock.library.dtos.CategoryDto;
 
 import com.diplock.library.services.category.CategoryService;
 import jakarta.validation.Valid;
@@ -31,22 +31,22 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDTO> findById(@PathVariable final Long id) {
+    public ResponseEntity<CategoryDto> findById(@PathVariable final Long id) {
         return ResponseEntity.ok(categoryService.findById(id));
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CategoryDTO>> findAll() {
+    public ResponseEntity<List<CategoryDto>> findAll() {
           return ResponseEntity.ok(categoryService.findAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDTO> save(@Valid @RequestBody final CategoryDh categoryDh) {
+    public ResponseEntity<CategoryDto> save(@Valid @RequestBody final CategoryDh categoryDh) {
       return ResponseEntity.ok(categoryService.save(categoryDh));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryDTO> update(@PathVariable final Long id, @RequestBody final CategoryDh categoryDh) {
+    public ResponseEntity<CategoryDto> update(@PathVariable final Long id, @RequestBody final CategoryDh categoryDh) {
           return ResponseEntity.ok(categoryService.update(id, categoryDh));
     }
 

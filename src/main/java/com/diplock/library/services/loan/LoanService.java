@@ -1,18 +1,18 @@
 package com.diplock.library.services.loan;
 
 import com.diplock.library.dataholders.LoanDh;
-import com.diplock.library.dtos.LoanDTO;
+import com.diplock.library.dtos.LoanDto;
 import java.util.List;
 
 public interface LoanService {
 
-  List<LoanDTO> findAll();
+  List<LoanDto> findAll();
 
-  LoanDTO findById(Long id);
+  LoanDto findById(Long id);
 
-  LoanDTO save(LoanDh loanDh);
+  LoanDto save(LoanDh loanDh);
 
-  LoanDTO update(Long id, LoanDh loanDh);
+  LoanDto update(Long id, LoanDh loanDh);
 
   Boolean delete(Long id);
 }

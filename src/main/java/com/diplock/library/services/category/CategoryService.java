@@ -1,18 +1,18 @@
 package com.diplock.library.services.category;
 
 import com.diplock.library.dataholders.CategoryDh;
-import com.diplock.library.dtos.CategoryDTO;
+import com.diplock.library.dtos.CategoryDto;
 import java.util.List;
 
 public interface CategoryService {
 
-  List<CategoryDTO> findAll();
+  List<CategoryDto> findAll();
 
-  CategoryDTO findById(Long id);
+  CategoryDto findById(Long id);
 
-  CategoryDTO save(CategoryDh categoryDh);
+  CategoryDto save(CategoryDh categoryDh);
 
-  CategoryDTO update(Long id, CategoryDh categoryDh);
+  CategoryDto update(Long id, CategoryDh categoryDh);
 
   Boolean delete(Long id);
 }
