@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("api/publisher")
+@RequestMapping("/publisher")
 public class PublisherController {
 
     @NonNull

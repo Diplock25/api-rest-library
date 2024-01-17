@@ -54,4 +54,5 @@ public class Book {
   @JoinTable(name = "books_categories", joinColumns = {@JoinColumn(name = "isbn")},
       inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private List<Category> categories;
+
 }
