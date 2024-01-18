@@ -56,7 +56,8 @@ public class Book {
   private List<Author> authors;
 
   @ManyToOne
-  @JoinColumn(name = "categoryId", referencedColumnName = "category_id", nullable = false)
+  @JoinColumn(name = "categoryId", referencedColumnName = "category_id")
+  @JsonIgnore
   private Category category;
 
   @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = false)
