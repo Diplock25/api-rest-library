@@ -26,6 +26,8 @@ public class BookDh {
 
   private List<AuthorDh> authors;
 
-  private List<CategoryDh> categories;
+  private CategoryDh category;
+
+  // private LoanDh loanList;
 
 }
