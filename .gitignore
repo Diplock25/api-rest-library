@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/java/com/diplock/library/entities/User.java
+/src/main/java/com/diplock/library/entities/Book.java
