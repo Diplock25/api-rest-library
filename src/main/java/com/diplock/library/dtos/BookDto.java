@@ -26,8 +26,5 @@ public class BookDto {
 
   private List<AuthorDto> authors;
 
-  private CategoryDto category;
-
-  // private List<LoanDto> loanList;
-
+  private List<CategoryDto> categories;
 }

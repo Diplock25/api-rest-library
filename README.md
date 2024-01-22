@@ -1,3 +1,0 @@
-> [!NOTE]
-> Readme ejemplo
-

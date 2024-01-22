@@ -6,8 +6,7 @@ import com.diplock.library.entities.Book;
 import java.util.List;
 import org.mapstruct.Mapper;
 
-@Mapper(uses = {AuthorMapper.class, CategoryMapper.class, LoanMapper.class})
-//@Mapper
+@Mapper(uses = AuthorMapper.class)
 public interface BookMapper {
 
   Book asEntity(BookDh bookDh);
