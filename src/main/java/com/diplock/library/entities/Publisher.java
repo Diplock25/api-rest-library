@@ -1,7 +1,10 @@
 package com.diplock.library.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +26,7 @@ public class Publisher {
     @Column(name = "country", length = 30)
     private String country;
 
-    //@OneToMany (mappedBy = "publishers")
-    //private List<Book> books;
+    @OneToMany(mappedBy = "publisher", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
+    @JsonIgnore
+    private List<Book> bookList;
 }
