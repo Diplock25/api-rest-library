@@ -5,6 +5,8 @@ import com.diplock.library.dtos.PublisherDto;
 import com.diplock.library.services.publisher.PublisherService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/publisher")
+@RequiredArgsConstructor
 public class PublisherController {
 
     @NonNull
