@@ -1,0 +1,7 @@
+server:
+  port: 3800
+spring:
+  application:
+    name: biblioteca-service
+  profiles:
+    active: local
