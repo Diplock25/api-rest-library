@@ -3,10 +3,13 @@ package com.diplock.library.services.category;
 import com.diplock.library.dataholders.CategoryDh;
 import com.diplock.library.dtos.CategoryDto;
 import com.diplock.library.entities.Category;
+import com.diplock.library.exceptions.CategoryNotFoundException;
+import com.diplock.library.exceptions.CategoryNotSaveException;
 import com.diplock.library.mapper.CategoryMapper;
 import com.diplock.library.repositories.CategoryRepository;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,26 +45,42 @@ public class CategoryServiceImpl implements CategoryService {
     if (category.isPresent()) {
       return categoryMapper.asDTO(category.get());
     } else {
-      log.warn("There is no category in the database with the id: {}", id);
-      return null;
+
+      throw new CategoryNotFoundException("GET - There is no category in the database with the id: " + id);
     }
   }
 
   @Override
   public CategoryDto save(final CategoryDh categoryDh) {
-    final Category category = categoryMapper.asEntity(categoryDh);
-    final Category categorySaved = categoryRepository.save(category);
-    return categoryMapper.asDTO(categorySaved);
+    if (Objects.equals(categoryDh.getName(), null)) {
+        throw new CategoryNotSaveException("POST - Parameters are incorrect for field name - name is null");
+    } else if (categoryDh.getName().isBlank()) {
+              throw new CategoryNotSaveException("POST - Parameters are incorrect for field name - name is blank");
+    } else {
+        final Category category = categoryMapper.asEntity(categoryDh);
+        final Category categorySaved = categoryRepository.save(category);
+        return categoryMapper.asDTO(categorySaved);
+    }
   }
 
   @Override
   public CategoryDto update(final Long id, final CategoryDh categoryDh) {
+    if (Objects.equals(categoryDh.getName(), null)) {
+        throw new CategoryNotSaveException("PUT - Parameters are incorrect for field name - name is null");
+    } else if (categoryDh.getName().isBlank()) {
+              throw new CategoryNotSaveException("PUT - Parameters are incorrect for field name - name is blank");
+    }
+
+    if (categoryDh.getCategoryId() != id) {
+        throw new CategoryNotSaveException("PUT - Parameters are incorrect for field categorId: " + categoryDh.getCategoryId() + " is different at id: " + id);
+    }
+
     final Category category = categoryMapper.asEntity(categoryDh);
     if (categoryRepository.existsById(id)) {
         return categoryMapper.asDTO(categoryRepository.save(category));
     }
-    log.warn("Update failed.  There is no category in the database with the id: {}", id);
-    return null;
+
+    throw new CategoryNotFoundException("PUT - There is no category in the database with the id: " + id);
   }
 
   @Override
@@ -70,7 +89,7 @@ public class CategoryServiceImpl implements CategoryService {
       categoryRepository.deleteById(id);
       return true;
     }
-    log.warn("Delete failed.  There is no category in the table categories with the id: {}", id);
-    return false;
+
+    throw new CategoryNotFoundException("DELETE - There is no category in the database with the id: " + id);
   }
 }

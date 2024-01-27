@@ -25,7 +25,7 @@ public class Category {
   @Column(name = "category_id")
   private Long categoryId;
 
-  @Column(name = "name", length = 30)
+  @Column(name = "name", nullable = false, length = 30)
   private String name;
 
   @Column(name = "subtopic", length = 30)

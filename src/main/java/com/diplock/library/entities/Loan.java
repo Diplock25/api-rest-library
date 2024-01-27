@@ -24,10 +24,10 @@ public class Loan {
   @Column(name = "loan_id")
   private Long loanId;
 
-  @Column(name = "loan_date", length = 10)
+  @Column(name = "loan_date", nullable = false, length = 10)
   private String loanDate;
 
-  @Column(name = "return_date", length =10)
+  @Column(name = "return_date", nullable = false, length =10)
   private String returnDate;
 
   @ManyToOne
