@@ -1,0 +1,18 @@
+spring:
+  # Mysql Configuration
+  datasource:
+    url: jdbc:mysql://monorail:proxy:rlwy:net:11372/railway
+    dbname: railway
+    username: root
+    password: bB-a55H1-g4H434E614AC2AhA33FDeGD
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # JPA Configuration
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+#      ddl-auto: create-drop
+  properties:
+    hibernate:
+      format_sql: true
+#      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
