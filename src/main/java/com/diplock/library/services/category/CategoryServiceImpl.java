@@ -6,14 +6,15 @@ import com.diplock.library.entities.Category;
 import com.diplock.library.exceptions.CategoryNotFoundException;
 import com.diplock.library.exceptions.CategoryNotSaveException;
 import com.diplock.library.mapper.CategoryMapper;
+import com.diplock.library.parsers.CategoryParser;
 import com.diplock.library.repositories.CategoryRepository;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -27,6 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
 
   @NonNull
   private CategoryMapper categoryMapper;
+
+  private CategoryParser categoryParser = new CategoryParser();
 
   @Override
   public List<CategoryDto> findAll() {
@@ -52,24 +55,29 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   public CategoryDto save(final CategoryDh categoryDh) {
-    if (Objects.equals(categoryDh.getName(), null)) {
+    categoryParser.Evaluator(categoryDh);
+
+    /** if (Objects.equals(categoryDh.getName(), null)) {
         throw new CategoryNotSaveException("POST - Parameters are incorrect for field name - name is null");
     } else if (categoryDh.getName().isBlank()) {
               throw new CategoryNotSaveException("POST - Parameters are incorrect for field name - name is blank");
-    } else {
+    } else { */
         final Category category = categoryMapper.asEntity(categoryDh);
         final Category categorySaved = categoryRepository.save(category);
         return categoryMapper.asDTO(categorySaved);
-    }
+    // }
   }
 
   @Override
   public CategoryDto update(final Long id, final CategoryDh categoryDh) {
+    categoryParser.Evaluator(categoryDh);
+
+    /**
     if (Objects.equals(categoryDh.getName(), null)) {
         throw new CategoryNotSaveException("PUT - Parameters are incorrect for field name - name is null");
     } else if (categoryDh.getName().isBlank()) {
               throw new CategoryNotSaveException("PUT - Parameters are incorrect for field name - name is blank");
-    }
+    } */
 
     if (categoryDh.getCategoryId() != id) {
         throw new CategoryNotSaveException("PUT - Parameters are incorrect for field categorId: " + categoryDh.getCategoryId() + " is different at id: " + id);

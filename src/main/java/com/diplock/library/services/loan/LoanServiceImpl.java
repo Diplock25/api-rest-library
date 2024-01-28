@@ -7,6 +7,7 @@ import com.diplock.library.exceptions.CategoryNotFoundException;
 import com.diplock.library.exceptions.CategoryNotSaveException;
 import com.diplock.library.exceptions.LoanNotFoundException;
 import com.diplock.library.mapper.LoanMapper;
+import com.diplock.library.parsers.LoanParser;
 import com.diplock.library.repositories.LoanRepository;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,8 @@ public class LoanServiceImpl implements LoanService {
 
   @NonNull
   private final LoanMapper loanMapper;
+
+  private LoanParser loanParser = new LoanParser();
 
   @Override
   public List<LoanDto> findAll() {
@@ -53,7 +56,9 @@ public class LoanServiceImpl implements LoanService {
 
   @Override
   public LoanDto save(final LoanDh loanDh) {
-    if (Objects.equals(loanDh.getLoanDate(), null)) {
+    loanParser.Evaluator(loanDh);
+
+    /** if (Objects.equals(loanDh.getLoanDate(), null)) {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is null");
     } else if (loanDh.getLoanDate().isBlank()) {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is blank");
@@ -63,7 +68,7 @@ public class LoanServiceImpl implements LoanService {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is null");
     } else if (loanDh.getReturnDate().isBlank()) {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is blank");
-    }
+    } */
 
     final Loan loan = loanMapper.asEntity(loanDh);
     final Loan loanSaved = loanRepository.save(loan);
@@ -72,7 +77,9 @@ public class LoanServiceImpl implements LoanService {
 
   @Override
   public LoanDto update(final Long id, final LoanDh loanDh) {
-    if (Objects.equals(loanDh.getLoanDate(), null)) {
+    loanParser.Evaluator(loanDh);
+
+    /** if (Objects.equals(loanDh.getLoanDate(), null)) {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is null");
     } else if (loanDh.getLoanDate().isBlank()) {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is blank");
@@ -82,7 +89,7 @@ public class LoanServiceImpl implements LoanService {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is null");
     } else if (loanDh.getReturnDate().isBlank()) {
       throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is blank");
-    }
+    } */
 
     if (loanDh.getLoanId() != id) {
       throw new CategoryNotSaveException("PUT - Parameters are incorrect for field LoanId: " + loanDh.getLoanId() + " is different at id: " + id);
