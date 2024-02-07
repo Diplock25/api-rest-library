@@ -5,7 +5,10 @@ import com.diplock.library.dtos.UserDTO;
 import com.diplock.library.entities.Role;
 import com.diplock.library.entities.User;
 import com.diplock.library.entities.enums.ERole;
+import com.diplock.library.exceptions.BdNotFoundException;
+import com.diplock.library.exceptions.BdNotSaveException;
 import com.diplock.library.mapper.UserMapper;
+import com.diplock.library.parsers.BdParser;
 import com.diplock.library.repositories.RoleRepository;
 import com.diplock.library.repositories.UserRepository;
 import java.util.Collections;
@@ -34,6 +37,8 @@ public class UserServiceImpl implements UserService {
   @NonNull
   private UserMapper userMapper;
 
+  private BdParser bdParser = new BdParser();
+
   @Override
   public List<UserDTO> findALl() {
 
@@ -53,14 +58,14 @@ public class UserServiceImpl implements UserService {
 
     if (user.isPresent()) {
       return this.userMapper.asDto(user.get());
+    } else {
+      throw new BdNotFoundException("GET - There is no user in the database with the id: " + id);
     }
-
-    log.warn("There is no user in the database with the id: {}", id);
-    return null;
   }
 
   @Override
   public UserDTO save(final UserDh userDh) {
+    bdParser.Evaluator(userDh, "POST");
     final User user = this.userMapper.asEntity(userDh);
     user.setRoles(getRolesFromNames(userDh.getRoles()));
 
@@ -73,6 +78,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDTO update(Long id, UserDh userDh) {
 
+    bdParser.Evaluator(userDh, "PUT");
+    if (userDh.getIdUser() != id) {
+      throw new BdNotSaveException("PUT - Parameters are incorrect for field userId: " + userDh.getIdUser() + " is different at id: " + id);
+    }
+
     final User user = this.userMapper.asEntity(userDh); // Remember that it ignores mapping for "roles"
     final boolean existsUser = this.userRepository.existsById(id);
 
@@ -83,11 +93,16 @@ public class UserServiceImpl implements UserService {
       return userMapper.asDto(user);
     }
 
-    return null;
+    throw new BdNotFoundException("PUT - There is no user in the database with the id: " + id);
   }
 
   @Override
   public UserDTO updateById(Long id, UserDh userDh) {
+
+    bdParser.Evaluator(userDh, "PUT");
+    if (userDh.getIdUser() != id) {
+      throw new BdNotSaveException("PUT - Parameters are incorrect for field userId: " + userDh.getIdUser() + " is different at id: " + id);
+    }
 
     Optional<User> optionalUser = userRepository.findById(id);
     final boolean existsUser = optionalUser.isPresent();
@@ -105,8 +120,7 @@ public class UserServiceImpl implements UserService {
       return this.userMapper.asDto(updatedUser);
     }
 
-    log.warn("Update failed. There is no user in the database with the id: {}", id);
-    return null;
+    throw new BdNotFoundException("PUT - There is no user in the database with the id: " + id);
   }
 
   @Override
@@ -118,7 +132,7 @@ public class UserServiceImpl implements UserService {
       return true;
     }
 
-    return false;
+    throw new BdNotFoundException("DELETE - There is no user in the database with the id: " + id);
   }
 
 

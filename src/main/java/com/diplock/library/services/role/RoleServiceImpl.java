@@ -3,7 +3,9 @@ package com.diplock.library.services.role;
 import com.diplock.library.dtos.RoleDTO;
 import com.diplock.library.dtos.UserDTO;
 import com.diplock.library.entities.Role;
+import com.diplock.library.exceptions.BdNotFoundException;
 import com.diplock.library.mapper.RoleMapper;
+import com.diplock.library.parsers.BdParser;
 import com.diplock.library.repositories.RoleRepository;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +28,8 @@ public class RoleServiceImpl implements RoleService {
   @NonNull
   private RoleMapper roleMapper;
 
+  private BdParser bdParser = new BdParser();
+
   @Override
   public List<RoleDTO> findAll() {
     List<Role> roles = (List<Role>) this.roleRepository.findAll();
@@ -45,9 +49,9 @@ public class RoleServiceImpl implements RoleService {
 
     if (isPresent) {
       return this.roleMapper.asDto(role.get());
+    } else {
+      throw new BdNotFoundException("GET - There is no role in the database with the id: " + id);
     }
-
-    return null;
   }
 
 }

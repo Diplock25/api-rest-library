@@ -3,15 +3,13 @@ package com.diplock.library.services.loan;
 import com.diplock.library.dataholders.LoanDh;
 import com.diplock.library.dtos.LoanDto;
 import com.diplock.library.entities.Loan;
-import com.diplock.library.exceptions.CategoryNotFoundException;
-import com.diplock.library.exceptions.CategoryNotSaveException;
-import com.diplock.library.exceptions.LoanNotFoundException;
+import com.diplock.library.exceptions.BdNotFoundException;
+import com.diplock.library.exceptions.BdNotSaveException;
 import com.diplock.library.mapper.LoanMapper;
-import com.diplock.library.parsers.LoanParser;
+import com.diplock.library.parsers.BdParser;
 import com.diplock.library.repositories.LoanRepository;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +28,7 @@ public class LoanServiceImpl implements LoanService {
   @NonNull
   private final LoanMapper loanMapper;
 
-  private LoanParser loanParser = new LoanParser();
+  private BdParser bdParser = new BdParser();
 
   @Override
   public List<LoanDto> findAll() {
@@ -50,25 +48,14 @@ public class LoanServiceImpl implements LoanService {
       return loanMapper.asDTO(loan.get());
     } else {
 
-      throw new LoanNotFoundException("GET - There is no loan in the database with the id: " + id);
+      throw new BdNotFoundException("GET - There is no loan in the database with the id: " + id);
     }
   }
 
   @Override
   public LoanDto save(final LoanDh loanDh) {
-    loanParser.Evaluator(loanDh);
+    bdParser.Evaluator(loanDh, "POST");
 
-    /** if (Objects.equals(loanDh.getLoanDate(), null)) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is null");
-    } else if (loanDh.getLoanDate().isBlank()) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is blank");
-    }
-
-    if (Objects.equals(loanDh.getReturnDate(), null)) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is null");
-    } else if (loanDh.getReturnDate().isBlank()) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is blank");
-    } */
 
     final Loan loan = loanMapper.asEntity(loanDh);
     final Loan loanSaved = loanRepository.save(loan);
@@ -77,22 +64,10 @@ public class LoanServiceImpl implements LoanService {
 
   @Override
   public LoanDto update(final Long id, final LoanDh loanDh) {
-    loanParser.Evaluator(loanDh);
-
-    /** if (Objects.equals(loanDh.getLoanDate(), null)) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is null");
-    } else if (loanDh.getLoanDate().isBlank()) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field LoanDate - name is blank");
-    }
-
-    if (Objects.equals(loanDh.getReturnDate(), null)) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is null");
-    } else if (loanDh.getReturnDate().isBlank()) {
-      throw new CategoryNotSaveException("POST - Parameters are incorrect for field ReturnDate - name is blank");
-    } */
+    bdParser.Evaluator(loanDh, "PUT");
 
     if (loanDh.getLoanId() != id) {
-      throw new CategoryNotSaveException("PUT - Parameters are incorrect for field LoanId: " + loanDh.getLoanId() + " is different at id: " + id);
+      throw new BdNotSaveException("PUT - Parameters are incorrect for field LoanId: " + loanDh.getLoanId() + " is different at id: " + id);
     }
 
     final Loan loan = loanMapper.asEntity(loanDh);
@@ -100,7 +75,7 @@ public class LoanServiceImpl implements LoanService {
       return loanMapper.asDTO(loanRepository.save(loan));
     }
 
-      throw new LoanNotFoundException("PUT - There is no loan in the database with the id: " + id);
+      throw new BdNotFoundException("PUT - There is no loan in the database with the id: " + id);
   }
 
   @Override
@@ -110,6 +85,6 @@ public class LoanServiceImpl implements LoanService {
       return true;
     }
 
-    throw new LoanNotFoundException("DELETE - There is no loan in the database with the id: " + id);
+    throw new BdNotFoundException("DELETE - There is no loan in the database with the id: " + id);
   }
 }

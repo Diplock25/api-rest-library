@@ -6,7 +6,7 @@ import com.diplock.library.entities.Author;
 import java.util.List;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(uses = {BookMapper.class})
 public interface AuthorMapper {
 
   Author asEntity(AuthorDh authorDh);

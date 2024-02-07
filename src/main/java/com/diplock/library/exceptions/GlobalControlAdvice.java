@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalControlAdvice {
 
-  @ExceptionHandler(CategoryNotFoundException.class)
-  public ResponseEntity<Object> categoryNotFoundHandler(Exception e) {
+  @ExceptionHandler(BdNotFoundException.class)
+  public ResponseEntity<Object> bdNotFoundHandler(Exception e) {
 
     ApiError apiError = ApiError.builder()
         .message(e.getMessage())
-        .description("(Exception) - Category not found")
+        .description("(Exception) - The object in BD not found")
         .date(java.time.LocalDate.now())
         .build();
 
@@ -21,25 +21,12 @@ public class GlobalControlAdvice {
 
   }
 
-  @ExceptionHandler(LoanNotFoundException.class)
-  public ResponseEntity<Object> loanNotFoundHandler(Exception e) {
+  @ExceptionHandler(BdNotSaveException.class)
+  public ResponseEntity<Object> bdNotSaveHandler(Exception e) {
 
     ApiError apiError = ApiError.builder()
         .message(e.getMessage())
-        .description("(Exception) - Loan not found")
-        .date(java.time.LocalDate.now())
-        .build();
-
-    return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
-
-  }
-
-  @ExceptionHandler(CategoryNotSaveException.class)
-  public ResponseEntity<Object> categoryNotSaveHandler(Exception e) {
-
-    ApiError apiError = ApiError.builder()
-        .message(e.getMessage())
-        .description("(Exception) - Category can´t be saved")
+        .description("(Exception) - The object in BD can´t be saved")
         .date(java.time.LocalDate.now())
         .build();
 
@@ -47,17 +34,4 @@ public class GlobalControlAdvice {
 
   }
 
-  @ExceptionHandler(LoanNotSaveException.class)
-  public ResponseEntity<Object> loanNotSaveHandler(Exception e) {
-
-    ApiError apiError = ApiError.builder()
-        .message(e.getMessage())
-        .description("(Exception) - Loan can´t be saved")
-        .date(java.time.LocalDate.now())
-        .build();
-
-    return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
-
-  }
-  
 }

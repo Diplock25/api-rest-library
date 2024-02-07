@@ -3,10 +3,10 @@ package com.diplock.library.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class LoanNotFoundException extends RuntimeException {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class BdNotSaveException extends RuntimeException {
 
-  public LoanNotFoundException(String message) {
+  public BdNotSaveException(String message) {
 
     super(message);
 

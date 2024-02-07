@@ -17,7 +17,7 @@ public class Book {
   @Column(name = "isbn", length = 13)
   private String isbn;
 
-  @Column(name = "title", length = 50)
+  @Column(name = "title", length = 50, nullable = false)
   private String title;
 
   @Column(name = "pages", length = 11)
@@ -41,10 +41,10 @@ public class Book {
   @Column(name = "language", length = 20)
   private String language;
 
-  @ManyToMany
-  @JoinTable(name = "books_authors", joinColumns = {@JoinColumn(name = "isbn")},
-      inverseJoinColumns = {@JoinColumn(name = "author_id")})
-  private List<Author> authors;
+  @ManyToOne
+  @JoinColumn(name = "authorId", referencedColumnName = "author_id")
+  @JsonIgnore
+  private Author authors;
 
   @ManyToOne
   @JoinColumn(name = "categoryId", referencedColumnName = "category_id")

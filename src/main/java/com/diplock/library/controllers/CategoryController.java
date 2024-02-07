@@ -2,9 +2,6 @@ package com.diplock.library.controllers;
 
 import com.diplock.library.dataholders.CategoryDh;
 import com.diplock.library.dtos.CategoryDto;
-
-import com.diplock.library.exceptions.CategoryNotFoundException;
-import com.diplock.library.exceptions.CategoryNotSaveException;
 import com.diplock.library.services.category.CategoryService;
 import jakarta.validation.Valid;
 import java.util.Collections;
