@@ -4,7 +4,6 @@ import com.diplock.library.dataholders.UserDh;
 import com.diplock.library.dtos.UserDTO;
 import com.diplock.library.entities.Role;
 import com.diplock.library.entities.User;
-import com.diplock.library.entities.enums.ERole;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

@@ -23,7 +23,7 @@ public class RoleController {
   @NonNull
   private RoleService roleService;
 
-  @GetMapping("")
+  @GetMapping
   public ResponseEntity<List<RoleDTO>> findAll() {
     return ResponseEntity.ok(roleService.findAll());
   }
