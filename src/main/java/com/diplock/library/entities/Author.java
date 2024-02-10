@@ -32,7 +32,7 @@ public class Author {
   @Column(name = "last_name", length = 50, nullable = false)
   private String lastName;
 
-  @OneToMany(mappedBy = "authors", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
+  @OneToMany(mappedBy = "author", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
   @JsonIgnore
   private List<Book> books;
 }

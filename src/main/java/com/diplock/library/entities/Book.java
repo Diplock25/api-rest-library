@@ -44,7 +44,7 @@ public class Book {
   @ManyToOne
   @JoinColumn(name = "authorId", referencedColumnName = "author_id")
   @JsonIgnore
-  private Author authors;
+  private Author author;
 
   @ManyToOne
   @JoinColumn(name = "categoryId", referencedColumnName = "category_id")
