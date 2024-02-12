@@ -1,5 +1,8 @@
 package com.diplock.library.dtos;
 
+import com.diplock.library.entities.Author;
+import com.diplock.library.entities.Category;
+import com.diplock.library.entities.Publisher;
 import java.util.List;
 import lombok.Data;
 
@@ -24,10 +27,12 @@ public class BookDto {
 
   private String language;
 
-  private List<AuthorDto> authors;
+  private Author author;
 
-  private CategoryDto category;
+  private Category category;
 
-  // private List<LoanDto> loanList;
+  private Publisher publisher;
+
+  // private List<Loan> loanList;
 
 }

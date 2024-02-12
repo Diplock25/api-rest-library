@@ -34,5 +34,5 @@ public class Author {
 
   @OneToMany(mappedBy = "author", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = false)
   @JsonIgnore
-  private List<Book> books;
+  private List<Book> bookList;
 }
