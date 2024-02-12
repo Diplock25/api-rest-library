@@ -31,7 +31,7 @@ public class Loan {
   private String returnDate;
 
   @ManyToOne
-  @JoinColumn(name = "userId", referencedColumnName = "user_id", nullable = false)
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
   @JsonIgnore
   private User user;
 

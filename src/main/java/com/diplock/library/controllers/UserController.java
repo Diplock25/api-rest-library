@@ -29,7 +29,6 @@ public class UserController {
   @NonNull
   private UserService userService;
 
-
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> findAll() {
     final List<UserDTO> userList = userService.findALl();

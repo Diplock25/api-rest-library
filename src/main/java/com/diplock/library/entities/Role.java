@@ -23,12 +23,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "roles")
 public class Role {
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "role_id")
   private Long roleId;
-
 
   @Enumerated(EnumType.STRING)
   @Column(name = "name", unique = true)
