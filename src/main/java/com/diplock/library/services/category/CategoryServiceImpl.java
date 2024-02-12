@@ -3,7 +3,10 @@ package com.diplock.library.services.category;
 import com.diplock.library.dataholders.CategoryDh;
 import com.diplock.library.dtos.CategoryDto;
 import com.diplock.library.entities.Category;
+import com.diplock.library.exceptions.BdNotFoundException;
+import com.diplock.library.exceptions.BdNotSaveException;
 import com.diplock.library.mapper.CategoryMapper;
+import com.diplock.library.parsers.BdParser;
 import com.diplock.library.repositories.CategoryRepository;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
   @NonNull
   private CategoryMapper categoryMapper;
 
+  private BdParser bdParser = new BdParser();
+
   @Override
   public List<CategoryDto> findAll() {
     final List<Category> categoryList = (List<Category>) categoryRepository.findAll();
@@ -42,13 +47,14 @@ public class CategoryServiceImpl implements CategoryService {
     if (category.isPresent()) {
       return categoryMapper.asDTO(category.get());
     } else {
-      log.warn("There is no category in the database with the id: {}", id);
-      return null;
+
+      throw new BdNotFoundException("GET - There is no category in the database with the id: " + id);
     }
   }
 
   @Override
   public CategoryDto save(final CategoryDh categoryDh) {
+    bdParser.Evaluator(categoryDh, "POST");
     final Category category = categoryMapper.asEntity(categoryDh);
     final Category categorySaved = categoryRepository.save(category);
     return categoryMapper.asDTO(categorySaved);
@@ -56,12 +62,18 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   public CategoryDto update(final Long id, final CategoryDh categoryDh) {
+    bdParser.Evaluator(categoryDh, "PUT");
+
+    if (categoryDh.getCategoryId() != id) {
+        throw new BdNotSaveException("PUT - Parameters are incorrect for field categorId: " + categoryDh.getCategoryId() + " is different at id: " + id);
+    }
+
     final Category category = categoryMapper.asEntity(categoryDh);
     if (categoryRepository.existsById(id)) {
         return categoryMapper.asDTO(categoryRepository.save(category));
     }
-    log.warn("Update failed.  There is no category in the database with the id: {}", id);
-    return null;
+
+    throw new BdNotFoundException("PUT - There is no category in the database with the id: " + id);
   }
 
   @Override
@@ -70,7 +82,6 @@ public class CategoryServiceImpl implements CategoryService {
       categoryRepository.deleteById(id);
       return true;
     }
-    log.warn("Delete failed.  There is no category in the table categories with the id: {}", id);
-    return false;
+    throw new BdNotFoundException("DELETE - There is no category in the database with the id: " + id);
   }
 }

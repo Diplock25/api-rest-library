@@ -2,9 +2,9 @@ package com.diplock.library.controllers;
 
 import com.diplock.library.dataholders.CategoryDh;
 import com.diplock.library.dtos.CategoryDto;
-
 import com.diplock.library.services.category.CategoryService;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 import lombok.NonNull;
@@ -37,12 +37,12 @@ public class CategoryController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CategoryDto>> findAll() {
-          return ResponseEntity.ok(categoryService.findAll());
+        return ResponseEntity.ok(categoryService.findAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDto> save(@Valid @RequestBody final CategoryDh categoryDh) {
-      return ResponseEntity.ok(categoryService.save(categoryDh));
+        return ResponseEntity.ok(categoryService.save(categoryDh));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

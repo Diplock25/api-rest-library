@@ -17,7 +17,7 @@ public class Publisher {
     @Column(name = "publisher_id")
     private Long publisherId;
 
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
     @Column(name = "location", length =  100)

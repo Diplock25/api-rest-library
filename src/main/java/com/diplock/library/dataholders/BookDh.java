@@ -1,6 +1,5 @@
 package com.diplock.library.dataholders;
 
-import java.util.List;
 import lombok.Data;
 
 @Data
@@ -24,9 +23,11 @@ public class BookDh {
 
   private String language;
 
-  private List<AuthorDh> authors;
+  private AuthorDh author;
 
   private CategoryDh category;
+
+  private PublisherDh publisher;
 
   // private LoanDh loanList;
 

@@ -3,7 +3,10 @@ package com.diplock.library.services.loan;
 import com.diplock.library.dataholders.LoanDh;
 import com.diplock.library.dtos.LoanDto;
 import com.diplock.library.entities.Loan;
+import com.diplock.library.exceptions.BdNotFoundException;
+import com.diplock.library.exceptions.BdNotSaveException;
 import com.diplock.library.mapper.LoanMapper;
+import com.diplock.library.parsers.BdParser;
 import com.diplock.library.repositories.LoanRepository;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +28,8 @@ public class LoanServiceImpl implements LoanService {
   @NonNull
   private final LoanMapper loanMapper;
 
+  private BdParser bdParser = new BdParser();
+
   @Override
   public List<LoanDto> findAll() {
     final List<Loan> loanList = (List<Loan>) loanRepository.findAll();
@@ -42,13 +47,16 @@ public class LoanServiceImpl implements LoanService {
     if (loan.isPresent()) {
       return loanMapper.asDTO(loan.get());
     } else {
-      log.warn("There is no loan in the database with the id: {}", id);
-      return null;
+
+      throw new BdNotFoundException("GET - There is no loan in the database with the id: " + id);
     }
   }
 
   @Override
   public LoanDto save(final LoanDh loanDh) {
+    bdParser.Evaluator(loanDh, "POST");
+
+
     final Loan loan = loanMapper.asEntity(loanDh);
     final Loan loanSaved = loanRepository.save(loan);
     return loanMapper.asDTO(loanSaved);
@@ -56,13 +64,18 @@ public class LoanServiceImpl implements LoanService {
 
   @Override
   public LoanDto update(final Long id, final LoanDh loanDh) {
+    bdParser.Evaluator(loanDh, "PUT");
+
+    if (loanDh.getLoanId() != id) {
+      throw new BdNotSaveException("PUT - Parameters are incorrect for field LoanId: " + loanDh.getLoanId() + " is different at id: " + id);
+    }
+
     final Loan loan = loanMapper.asEntity(loanDh);
     if (loanRepository.existsById(id)) {
       return loanMapper.asDTO(loanRepository.save(loan));
-    } else {
-      log.warn("Update failed.  There is no loan in the database with the id: {}", id);
-      return null;
     }
+
+      throw new BdNotFoundException("PUT - There is no loan in the database with the id: " + id);
   }
 
   @Override
@@ -71,7 +84,7 @@ public class LoanServiceImpl implements LoanService {
       loanRepository.deleteById(id);
       return true;
     }
-    log.warn("Delete failed.  There is no loan in the database with the id: {}", id);
-    return false;
+
+    throw new BdNotFoundException("DELETE - There is no loan in the database with the id: " + id);
   }
 }
